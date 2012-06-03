@@ -2,7 +2,7 @@
   "author": "Henry Allen-Tilford <htilford@gmail.com> (htilford@gmail.com)",
   "name": "foodnexus",
   "description": "FOODNEXUS",
-  "version": "0.0.0",
+  "version": "0.0.0-1",
   "homepage": "foodnexus.jit.su",
   "repository": {
     "type": "git",
@@ -10,7 +10,8 @@
   },
   "main": "app.js",
   "dependencies": {
-    "express": "~2.5.9"
+    "express": "~2.5.9",
+    "nodetime": "~0.2.10"
   },
   "devDependencies": {},
   "optionalDependencies": {},
