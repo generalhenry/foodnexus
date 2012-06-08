@@ -1,5 +1,15 @@
 {
   "author": "Henry Allen-Tilford <htilford@gmail.com> (htilford@gmail.com)",
+  "contributors": [
+    {
+      "name": "Henry Allen-Tilford",
+      "email": "htilford@gmail.com"
+    },
+    {
+      "name": "Jesse Martin",
+      "email": "jessemar10@gmail.com"
+    }
+  ],
   "name": "foodnexus",
   "description": "FOODNEXUS",
   "version": "0.0.0-1",
