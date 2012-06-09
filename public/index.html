@@ -1,4 +1,76 @@
 <!DOCTYPE html>
 <meta charset=utf-8>
-<title>FOODNEXUS</title>
-<h1>F O O D N E X U S</h1>
+<title>F O O D  N E X U S</title>
+<meta name=viewport content='initial-scale=1.0, user-scalable=no'>
+<style>
+  html {
+    height: 100%;
+  }
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  #map_canvas {
+    height: 100%;
+    width:30%;
+    height:30%;
+  }
+</style>
+<script src='//maps.googleapis.com/maps/api/js?sensor=true'></script>
+<script src=MultiMeet.js></script>
+<script type='text/javascript'>
+  var geocoder;
+  var map;
+  var latLongArray = [];
+  var willingnessArray = [];
+  function initialize() {
+    geocoder = new google.maps.Geocoder();
+    var myOptions = {
+      center: new google.maps.LatLng(-34.397, 150.644),
+      zoom: 8,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+  }
+  function addToArray() {
+    var address = document.getElementById('addressInput').value;
+    var willingness = parseFloat(document.getElementById('willingnessInput').value);
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status === google.maps.GeocoderStatus.OK) {
+        var latLng = results[0].geometry.location;
+        map.setCenter(latLng);
+        var marker = new google.maps.Marker({
+          map: map,
+          position: latLng
+        });
+        latLongArray.push(latLng);
+        willingnessArray.push(willingness);
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+    document.getElementById('addressInput').value = '';
+    document.getElementById('willingnessInput').value = '';
+  }
+  function centerMap() {
+    alert(latLongArray);
+    var googleLatLng = midPoint(latLongArray, willingnessArray);
+    map.setCenter(googleLatLng);
+    var marker = new google.maps.Marker({
+      map: map,
+      position: googleLatLng
+    });
+  }
+</script>
+<body onload=initialize()>
+  <div id=map_canvas></div>
+  <form>
+    address: <input id=addressInput><br>
+    willingness: <input id=willingnessInput><br>
+    <input type=button value=Click name=add onClick=addToArray()>
+  </form>
+  <form>
+    <input type=button value=Click name=mid onClick=centerMap()>
+  </form>
+</body>
