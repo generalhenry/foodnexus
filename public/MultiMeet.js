@@ -69,3 +69,49 @@ function midPoint(latLongArray, willingnessArray) {
   aggreZ *= factor;
   return cartesianToLatLong(aggreX / latLongArray.length, aggreY / latLongArray.length, aggreZ / latLongArray.length);
 }
+
+function getRoadDistanceArray(mid, latLongArray, willingnessArray, count) {
+	var param = {
+		    origins: [mid],
+		    destinations: latLongArray,
+		    travelMode: google.maps.TravelMode.DRIVING,
+		    avoidHighways: false,
+		    avoidTolls: false
+	};
+	distanceMatrixService.getDistanceMatrix(param, function(response, status) {
+		  if (status == google.maps.DistanceMatrixStatus.OK) {
+			    var origins = response.originAddresses;
+			    var destinations = response.destinationAddresses;
+
+			    for (var i = 0; i < origins.length; i++) {
+			      var results = response.rows[i].elements;
+			      for (var j = 0; j < results.length; j++) {
+			        var element = results[j];
+			        var distance = element.distance.text;
+			      }
+			    }
+			  }
+	});
+}
+
+function bearing(mid, latLong) {
+	var y = Math.sin(Math.abs(mid.getLng() - latLong.getLng())) * Math.cos(latLong.getLat());
+	var x = Math.cos(mid.getLat())*Math.sin(latLong.getLat()) -
+	        Math.sin(mid.getLat())*Math.cos(latLong.getLat())*Math.cos(Math.abs(mid.getLng() - latLong.getLng()));
+	return Math.atan2(y, x);
+}
+
+function moveMidInDirection(mid, bearing, epsilon) {
+	lat1 = toRadian(mid.getLat());
+	lng1 = toRadian(mid.getLng());
+	lat2 = Math.asin( math.sin(lat1)*Math.cos(epsilon/EARTH.RADIUS) +
+			Math.cos(lat1)*Math.sin(epsilon/EARTH.RADIUS)*Math.cos(bearing));
+
+	lng2 = lng1 + Math.atan2(Math.sin(bearing)*Math.sin(epsilon/EARTH.RADIUS)*Math.cos(lat1),
+				Math.cos(epsilon/EARTH.RADIUS)-Math.sin(lat1)*Math.sin(lat2));
+	return new google.maps.LatLng(lat2, lng2, false);
+}
+
+function findBestMid(mid, latLongArray, willingnessArray, epsilon, count) {
+	
+}
