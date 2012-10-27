@@ -4,4 +4,4 @@ var app = express.createServer();
 
 app.use(express.static(process.cwd() + '/public'));
 
-app.listen(process.env.port || 8080);
+app.listen(process.env.PORT || 8080);
